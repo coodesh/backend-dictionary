@@ -393,4 +393,4 @@ Avisar sobre a finalização e enviar para correção.
 
 ## Suporte
 
-Use o nosso canal no discord: https://discord.gg/rdXbEvjsWu para tirar dúvidas sobre o processo ou envie um e-mail para contato@coodesh.com.
+Use a [nossa comunidade](https://coodesh.com/desenvolvedores#community) para tirar dúvidas sobre o processo ou envie um e-mail para contato@coodesh.com.
