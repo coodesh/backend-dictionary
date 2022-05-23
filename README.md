@@ -1,92 +1,396 @@
-# Dictionary
+# Back-end Challenge 🏅 2022 - Dictionary
 
+## Introdução
 
+Este é um desafio para que possamos ver as suas habilidades como Back-end Developer.
 
-## Getting started
+Nesse desafio você deverá desenvolver um aplicativo para listar palavras em inglês, utilizando como base a API [Free Dictionary API](https://dictionaryapi.dev/). O projeto a ser desenvolvido por você tem como objetivo exibir termos em inglês e gerenciar as palavras visualizadas, conforme indicado nos casos de uso que estão logo abaixo.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+[SPOILER] As instruções de entrega e apresentação do challenge estão no final deste Readme (=
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### Instruções iniciais obrigatórias
 
-## Add your files
+- Utilizar o seu github pessoal para publicar o desafio. Confirme que a visibilidade do projeto é pública (não esqueça de colocar no readme a referência a este challenge);
+- Utilize as seguintes tecnologias:
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+#### Tecnologias (Back-End):
+- API (Node.js, PHP, Ruby, etc) com ou sem uso de frameworks
+- Banco de dados (Postgres, MySQL, MongoDB, etc).
 
+Como sugestões, pode criar um banco de dados grátis **MongoDB** usando Atlas: https://www.mongodb.com/cloud/atlas ou banco de dados grátis **MySQL** no Heroku: https://elements.heroku.com/addons/jawsdb ou banco de dados grátis **Postgres** no Heroku: https://elements.heroku.com/addons/heroku-postgresql; (Recomendável usar Drivers oficiais para integração com o DB)
+
+#### Organização:
+- Aplicação de padrões Clean Code
+- Validação de chamadas assíncronas para evitar travamentos
+
+### Modelo de Dados:
+
+Conforme indicado na documentação da API, a estrutura de dados presente retorna as seguintes informações:
+
+```json
+[
+    {
+        "word": "hello",
+        "phonetics": [
+            {
+                "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/hello-au.mp3",
+                "sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=75797336",
+                "license": {
+                    "name": "BY-SA 4.0",
+                    "url": "https://creativecommons.org/licenses/by-sa/4.0"
+                }
+            },
+            {
+                "text": "/həˈləʊ/",
+                "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/hello-uk.mp3",
+                "sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=9021983",
+                "license": {
+                    "name": "BY 3.0 US",
+                    "url": "https://creativecommons.org/licenses/by/3.0/us"
+                }
+            },
+            {
+                "text": "/həˈloʊ/",
+                "audio": ""
+            }
+        ],
+        "meanings": [
+            {
+                "partOfSpeech": "noun",
+                "definitions": [
+                    {
+                        "definition": "\"Hello!\" or an equivalent greeting.",
+                        "synonyms": [],
+                        "antonyms": []
+                    }
+                ],
+                "synonyms": [
+                    "greeting"
+                ],
+                "antonyms": []
+            },
+            {
+                "partOfSpeech": "verb",
+                "definitions": [
+                    {
+                        "definition": "To greet with \"hello\".",
+                        "synonyms": [],
+                        "antonyms": []
+                    }
+                ],
+                "synonyms": [],
+                "antonyms": []
+            },
+            {
+                "partOfSpeech": "interjection",
+                "definitions": [
+                    {
+                        "definition": "A greeting (salutation) said when meeting someone or acknowledging someone’s arrival or presence.",
+                        "synonyms": [],
+                        "antonyms": [],
+                        "example": "Hello, everyone."
+                    },
+                    {
+                        "definition": "A greeting used when answering the telephone.",
+                        "synonyms": [],
+                        "antonyms": [],
+                        "example": "Hello? How may I help you?"
+                    },
+                    {
+                        "definition": "A call for response if it is not clear if anyone is present or listening, or if a telephone conversation may have been disconnected.",
+                        "synonyms": [],
+                        "antonyms": [],
+                        "example": "Hello? Is anyone there?"
+                    },
+                    {
+                        "definition": "Used sarcastically to imply that the person addressed or referred to has done something the speaker or writer considers to be foolish.",
+                        "synonyms": [],
+                        "antonyms": [],
+                        "example": "You just tried to start your car with your cell phone. Hello?"
+                    },
+                    {
+                        "definition": "An expression of puzzlement or discovery.",
+                        "synonyms": [],
+                        "antonyms": [],
+                        "example": "Hello! What’s going on here?"
+                    }
+                ],
+                "synonyms": [],
+                "antonyms": [
+                    "bye",
+                    "goodbye"
+                ]
+            }
+        ],
+        "license": {
+            "name": "CC BY-SA 3.0",
+            "url": "https://creativecommons.org/licenses/by-sa/3.0"
+        },
+        "sourceUrls": [
+            "https://en.wiktionary.org/wiki/hello"
+        ]
+    }
+]
 ```
-cd existing_repo
-git remote add origin https://lab.coodesh.com/challenges/dictionary.git
-git branch -M main
-git push -uf origin main
+
+### Back-End:
+
+Nessa etapa você deverá construir uma API Restful com as melhores práticas de desenvolvimento.
+
+**Obrigatório 1** - Você deverá atender aos seguintes casos de uso:
+
+- Como usuário, devo ser capaz de realizar login com usuário e senha
+- Como usuário, devo ser capaz de visualizar a lista de palavras do dicionário
+- Como usuário, devo ser capaz de guardar no histórico palavras já visualizadas
+- Como usuário, devo ser capaz de visualizar o histórico de palavras já visualizadas
+- Como usuário, deve ser capaz de guardar uma palavra como favorita
+- Como usuário, deve ser capaz de apagar uma palavra favorita
+- Internamente, a API deve fazer proxy da API Free Dictionary, pois assim o front irá acessar somente a sua API
+
+**Obrigatório 2** - Você deverá desenvolver as seguintes rotas com suas requisições e respostas:
+
+<details open>
+<summary>[GET] /</summary>
+<p>
+Retornar a mensagem "Fullstack Challenge 🏅 - Dictionary"
+</p>
+
+```json
+{
+    "message": "Fullstack Challenge 🏅 - Dictionary"
+}
+```
+</details>
+<details open>
+<summary>[POST] /auth/signup</summary>
+
+```json
+{
+    "name": "User 1",
+    "email": "example@email.com",
+    "password": "test"
+}
 ```
 
-## Integrate with your tools
+```json
+{
+    "id": "f3a10cec013ab2c1380acef",
+    "name": "User 1",
+    "token": "Bearer JWT.Token"
+}
+```
+</details>
+<details open>
+<summary>[POST] /auth/signin</summary>
 
-- [ ] [Set up project integrations](https://lab.coodesh.com/challenges/dictionary/-/settings/integrations)
+```json
+{
+    "email": "example@email.com",
+    "password": "test"
+}
+```
 
-## Collaborate with your team
+```json
+{
+    "id": "f3a10cec013ab2c1380acef",
+    "name": "User 1",
+    "token": "Bearer JWT.Token"
+}
+```
+</details>
+<details open>
+<summary>[GET] /entries/en</summary>
+<p>
+Retornar a lista de palavras do dicionário, com paginação e suporte a busca. O endpoint de paginação de uma busca hipotética deve retornar a seguinte estrutura:
+<br/>
+[GET]/entries/en?search=fire&limit=4
+</p>
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```json
+{
+    "results": [
+        "fire",
+        "firefly",
+        "fireplace",
+        "fireman"
+    ],
+    "totalDocs": 20,
+    "page": 1,
+    "totalPages": 5, 
+    "hasNext": true,
+    "hasPrev": false
+}
+```
+</details>
+<details open>
+<summary>[GET] /entries/en/:word</summary>
+<p>
+Retornar as informações da palavra especificada e registra o histórico de acesso.
+</p>
+</details>
+<details open>
+<summary>[POST] /entries/en/:word/favorite</summary>
+<p>
+Salva a palavra na lista de favoritas (retorno opcional)
+</p> 
+</details>
+<details open>
+<summary>[DELETE] /entries/en/:word/unfavorite</summary>
+<p>
+Remover a palavra da lista de favoritas (retorno opcional)
+</p>
+</details> 
+<details open>
+<summary>[GET] /user/me</summary>
+<p>
+Retornar o perfil do usúario
+</p>
+</details> 
+<details open>
+<summary>[GET] /user/me/history</summary>
+<p>
+Retornar a lista de palavras visitadas
+</p>
 
-## Test and Deploy
+```json
+{
+    "results": [
+        {
+            "word": "fire",
+            "added": "2022-05-05T19:28:13.531Z"
+        },
+        {
+            "word": "firefly",
+            "added": "2022-05-05T19:28:44.021Z"
+        },
+        {
+            "word": "fireplace",
+            "added": "2022-05-05T19:29:28.631Z"
+        },
+        {
+            "word": "fireman",
+            "added": "2022-05-05T19:30:03.711Z"
+        }
+    ],
+    "totalDocs": 20,
+    "page": 2,
+    "totalPages": 5,
+    "hasNext": true,
+    "hasPrev": true
+}
+```
+</details> 
+<details open>
+<summary>[GET] /user/me/favorites</summary>
+<p>
+Retornar a lista de palavras marcadas como favoritas
+</p>
 
-Use the built-in continuous integration in GitLab.
+```json
+{
+    "results": [
+        {
+            "word": "fire",
+            "added": "2022-05-05T19:30:23.928Z"
+        },
+        {
+            "word": "firefly",
+            "added": "2022-05-05T19:30:24.088Z"
+        },
+        {
+            "word": "fireplace",
+            "added": "2022-05-05T19:30:28.963Z"
+        },
+        {
+            "word": "fireman",
+            "added": "2022-05-05T19:30:33.121Z"
+        }
+    ],
+    "totalDocs": 20,
+    "page": 2,
+    "totalPages": 5,
+    "hasNext": true,
+    "hasPrev": true
+}
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+</details>
 
-***
+Além disso, os endpoints devem utilizar os seguintes códigos de status:
+- 200: sucesso com body ou sem body
+- 204: sucesso sem body
+- 400: mensagem de erro em formato humanizado, ou seja, sem informações internas e códigos de erro:
 
-# Editing this README
+```json
+{
+    "message": "Error message"
+}
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+**Obrigatório 3** - Você deve criar um script para baixar a lista de palavras do repositório e importar estas palavras para o banco de dados. A Free Dictionary API não possui endpoint com a lista de palavras. Para criar este endpoint será necessário alimentar o seu banco de dados com o [arquivo existente dentro do projeto no Github](https://github.com/meetDeveloper/freeDictionaryAPI/tree/master/meta/wordList).
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+**Obrigatório 4** - Salvar em cache o resultado das requisições ao Free Dictionary API, para agilizar a resposta em caso de buscas com parâmetros repetidos. Sugestões são usar o Redis e/ou MongoDB;
 
-## Name
-Choose a self-explaining name for your project.
+O cache pode ser feito a guardar todo o corpo das respostas ou para guardar o resultado das queries do banco. Para identificar a presença de cache, será necessário adicionar os seguintes headers nas respostas:
+- x-cache: valores HIT (retornou dados em cache) ou MISS (precisou buscar no banco)
+- x-response-time: duração da requisição em milissegundos
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+**Diferencial 1** - Descrever a documentação da API utilizando o conceito de Open API 3.0;
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+**Diferencial 2** - Escrever Unit Tests para os endpoints da API;
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+**Diferencial 3** - Configurar Docker no Projeto para facilitar o Deploy da equipe de DevOps;
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+**Diferencial 4** - Deploy em algum servidor, com ou sem automatização do CI.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+**Diferencial 5** - Implementar paginação com cursores ao inves de usar page e limit . Ao realizar este diferencial, o retorno dos endpoints deve possuir a seguinte estrutura:
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+```json
+{
+    "results": [
+        "fire",
+        "firefly",
+        "fireplace",
+        "fireman"
+    ],
+    "totalDocs": 20,
+    "previous": "eyIkb2lkIjoiNTgwZmQxNmjJkOGI5In0",
+    "next": "eyIkb2lkIjoiNTgwZmQxNm1NjJkOGI4In0",
+    "hasNext": true,
+    "hasPrev": true,
+}
+```
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## Readme do Repositório
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+- Deve conter o título do projeto
+- Uma descrição sobre o projeto em frase
+- Deve conter uma lista com linguagem, framework e/ou tecnologias usadas
+- Como instalar e usar o projeto (instruções)
+- Não esqueça o [.gitignore](https://www.toptal.com/developers/gitignore)
+- Se está usando github pessoal, referencie que é um challenge by coodesh:  
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+>  This is a challenge by [Coodesh](https://coodesh.com/)
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## Finalização e Instruções para a Apresentação
 
-## License
-For open source projects, say how it is licensed.
+Avisar sobre a finalização e enviar para correção.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+1. Confira se você respondeu o Scorecard anexado na Vaga que se candidatou;
+2. Confira se você respondeu o Mapeamento anexado na Vaga que se candidatou;
+3. Acesse [https://coodesh.com/challenges/review](https://coodesh.com/challenges/review);
+4. Adicione o repositório com a sua solução;
+5. Grave um vídeo, utilizando o botão na tela de solicitar revisão da Coodesh, com no máximo 5 minutos, com a apresentação do seu projeto. Utilize o tempo para:
+- Explicar o objetivo do desafio
+- Quais tecnologias foram utilizadas
+- Mostrar a aplicação em funcionamento
+- Foque em pontos obrigatórios e diferenciais quando for apresentar.
+6. Adicione o link da apresentação do seu projeto no README.md.
+7. Verifique se o Readme está bom e faça o commit final em seu repositório;
+8. Confira a vaga desejada;
+9. Envie e aguarde as instruções para seguir no processo. Sucesso e boa sorte. =)
+
+## Suporte
+
+Use o nosso canal no discord: https://discord.gg/rdXbEvjsWu para tirar dúvidas sobre o processo ou envie um e-mail para contato@coodesh.com.
