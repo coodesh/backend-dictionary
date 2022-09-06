@@ -231,13 +231,13 @@ Retornar as informações da palavra especificada e registra o histórico de ace
 <details open>
 <summary>[POST] /entries/en/:word/favorite</summary>
 <p>
-Salva a palavra na lista de favoritas (retorno opcional)
+Salva a palavra na lista de favoritas (retorno de dados no body é opcional)
 </p> 
 </details>
 <details open>
 <summary>[DELETE] /entries/en/:word/unfavorite</summary>
 <p>
-Remover a palavra da lista de favoritas (retorno opcional)
+Remover a palavra da lista de favoritas (retorno de dados no body é opcional)
 </p>
 </details> 
 <details open>
